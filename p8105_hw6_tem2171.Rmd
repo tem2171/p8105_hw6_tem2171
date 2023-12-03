@@ -84,8 +84,7 @@ bootstrap_results =
 ```{r}
 bootstrap_results |> 
   ggplot(aes(x = r2)) + 
-  geom_density() +
-  labs(title = "R^2 distribution")
+  geom_density()
 ```
 
 This distribution is slightly left skewed, with a light tail extending to low values. It is almost a normal distribution.
@@ -95,8 +94,7 @@ This distribution is slightly left skewed, with a light tail extending to low va
 ```{r}
 bootstrap_results |> 
   ggplot(aes(x = log_b1_b2)) + 
-  geom_density() +
-  labs(title = "Log(B1 * B2) Distribution")
+  geom_density()
 ```
 
 This distribution is extremely left skewed, with a heavy tail extending to low values.
