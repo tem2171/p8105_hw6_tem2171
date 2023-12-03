@@ -4,7 +4,7 @@ author: "Teresa Moore"
 date: "2023-11-28"
 output: github_document
 ---
-```{r}
+```{r, include=FALSE}
 library(tidyverse)
 library(modelr)
 
@@ -12,7 +12,7 @@ set.seed(1)
 ```
 
 
-#Problem 2
+# Problem 2
 
 For this problem, we’ll use the Central Park weather data similar to data we’ve seen elsewhere. The code chunk below (adapted from the course website) will download these data.
 
@@ -79,7 +79,7 @@ bootstrap_results =
   inner_join(tidy_bootstrap_results, glance_bootstrap_results)
 ```
 
-R^2 Distribution
+## R^2 Distribution
 ```{r}
 bootstrap_results |> 
   ggplot(aes(x = r2)) + 
@@ -89,12 +89,12 @@ bootstrap_results |>
 This distribution is slightly left skewed, with a light tail extending to low values. It is almost a normal distribution.
 
 
-log(B1*B2) Distribution
+## log(B1*B2) Distribution
 ```{r}
 bootstrap_results |> 
   ggplot(aes(x = log_b1_b2)) + 
   geom_density() +
-  labs(title = "Log(B1 * B2) distribution")
+  labs(title = "Log(B1 * B2) Distribution")
 ```
 
 This distribution is extremely left skewed, with a heavy tail extending to low values.
@@ -113,9 +113,10 @@ bootstrap_results |>
 The 95% confidence interval for r̂ 2 is between 0.889 and 0.941.The 95% confidence interval for log(β̂1∗β̂2) is between -8.982 and -4.602.
 
 
-#Problem 3
+# Problem 3
 
 Load and clean the data for regression analysis (i.e. convert numeric to factor where appropriate, check for missing data, etc.).
+
 ```{r, echo=TRUE, results='hide'}
 birthweight <- read.csv("data/birthweight.csv")
 
@@ -143,7 +144,7 @@ Proposed a regression model for birthweight:
 bwt= intercept + babysex + gaweeks + ppbmi + wtgain + blength.
 I chose these variables because I believe they would have the most impact on birth weight.
 
-Plot of model residuals against fitted values
+## Plot of model residuals against fitted values:
 ```{r}
 birthweight |>
   modelr::add_residuals(fit) |>
@@ -151,9 +152,9 @@ birthweight |>
   ggplot(aes(x=resid, y=pred)) + geom_point(alpha=0.5, size=0.5)
 ```
  
- the plot of model residuals vs fitted values is clustered around 0, with the average predicted value being approximately 3200 g. The cluster is pretty tight, however there are some outliers. 
+the plot of model residuals vs fitted values is clustered around 0, with the average predicted value being approximately 3200 g. The cluster is pretty tight, however there are some outliars. 
  
-Comparison of model to one using length at birth and gestational age as predictors (main effects only):
+## Comparison of model to one using length at birth and gestational age as predictors (main effects only):
 ```{r}
 cv1_df = 
   crossv_mc(birthweight, 100) 
@@ -170,10 +171,11 @@ cv1_df |>
     everything(), names_to="model", values_to="rmse", names_prefix="rmse_") |>
   ggplot(aes(x=model, y=rmse)) + geom_violin()
 ```
+
 My model has a lower RMSE value than the model using length at birth and gestational age as predictors.
  
  
-Comparison of model to one using head circumference, length, sex, and all interactions (including the three-way interaction) between these:
+## Comparison of model to one using head circumference, length, sex, and all interactions (including the three-way interaction) between these:
 ```{r}
 cv2_df = 
   crossv_mc(birthweight, 100) 
@@ -190,4 +192,5 @@ cv2_df |>
     everything(), names_to="model", values_to="rmse", names_prefix="rmse_") |>
   ggplot(aes(x=model, y=rmse)) + geom_violin()
 ```
+
 My model has a much higher RMSE value than the model using head circumference, length, sex, and all interactions (including the three-way interaction) between these. Ultimately, the model with interaction terms appears to be the best model.
