@@ -39,6 +39,7 @@ boot_sample <- function(df) {
 }
 ```
 
+make a list column to make a data structure to keep track of everything.
 ```{r}
 boot_straps = 
   tibble(strap_number = 1:5000) |> 
@@ -46,6 +47,8 @@ boot_straps =
     strap_sample = map(strap_number, \(i) boot_sample(df = weather_df))
   )
 ```
+
+produce estimates of r̂ 2 & log(β̂ 1∗β̂ 2) for each sample.
 
 ```{r}
 tidy_bootstrap_results = 
@@ -62,9 +65,7 @@ tidy_bootstrap_results =
   ) |> 
   mutate(log_b1_b2 = log(tmin * prcp)) |> 
   select(strap_number, log_b1_b2)
-```
 
-```{r}
 glance_bootstrap_results =
   boot_straps |> 
   mutate(
