@@ -87,6 +87,7 @@ bootstrap_results |>
   geom_density() +
   labs(title = "R^2 distribution")
 ```
+
 This distribution is slightly left skewed, with a light tail extending to low values. It is almost a normal distribution.
 
 
